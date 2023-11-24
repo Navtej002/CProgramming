@@ -37,31 +37,31 @@ int main(int argc, char* argv[])
 	}
 
 
-	struct MyData args;
-	args.howMany = atoi(argv[1]);
+	struct MyData myArgs;
+	myArgs.howMany = atoi(argv[1]);
 
 
-	if (args.howMany <= 0)      //Checks if argv[1] is a postive integer.
+	if (myArgs.howMany <= 0)      //Checks if argv[1] is a postive integer.
 	{
 		displayError("First argument must be a postive integer.");
 		return 1;
 	}
 	
 
-	strncpy(args.theText, argv[2], MAX_STRING_LENGTH - 1);
-	args.theText[MAX_STRING_LENGTH - 1] = '\0';   //Null-terminates at the end of string.
+	strncpy(myArgs.theText, argv[2], MAX_STRING_LENGTH - 1);
+	myArgs.theText[MAX_STRING_LENGTH - 1] = '\0';   //Null-terminates at the end of string.
 
-	strncpy(args.directoryPath, argv[3], MAX_STRING_LENGTH - 1);
-	args.directoryPath[MAX_STRING_LENGTH - 1] = '\0';   //Null-terminates at the end of string.
+	strncpy(myArgs.directoryPath, argv[3], MAX_STRING_LENGTH - 1);
+	myArgs.directoryPath[MAX_STRING_LENGTH - 1] = '\0';   //Null-terminates at the end of string.
 
-	strncpy(args.filename, argv[4], MAX_STRING_LENGTH - 1);
-	args.filename[MAX_STRING_LENGTH - 1] = '\0';   //Null-terminates at the end of string.
+	strncpy(myArgs.filename, argv[4], MAX_STRING_LENGTH - 1);
+	myArgs.filename[MAX_STRING_LENGTH - 1] = '\0';   //Null-terminates at the end of string.
 
 
 	char fullPath[MAX_FULLPATH_LENGTH] = { 0 };
-	strcpy(fullPath, args.directoryPath);      
+	strcpy(fullPath, myArgs.directoryPath);      
 	strcat(fullPath, "\\");
-	strcat(fullPath, args.filename);
+	strcat(fullPath, myArgs.filename);
 
 
 	#pragma warning(disable:4996)
@@ -73,9 +73,9 @@ int main(int argc, char* argv[])
 		return 1;
 	}
 
-	for (int i = 0; i < args.howMany; i++)  // Writes 'theText' field's contents in each line of file until 'howMany' is reached. 
+	for (int i = 0; i < myArgs.howMany; i++)  // Writes 'theText' field's contents in each line of file until 'howMany' is reached. 
 	{
-		if (fprintf(textFile, "%s\n", args.theText) < 0) 
+		if (fprintf(textFile, "%s\n", myArgs.theText) < 0) 
 		{
 			displayError("Error writing to the file.");  //error checking
 			
