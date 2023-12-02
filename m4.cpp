@@ -3,7 +3,9 @@
 * Project Name: Major Assignment 4
 * Programmer's Name: Navtej Saini
 * Date of First Revision: Nov. 27, 2023
-* Description:
+* Description: This program displays the win-loss-draw record on a per-game basis for a roster of teams.
+* It uses processGames() function to handle the all functionality in this program, with parseLine() function
+* being called within processGames() to determine the team's score and opposing team's score. 
 */
 
 #include <stdio.h>
@@ -18,7 +20,6 @@
 
 int parseLine(char* wholeLine, char* teamName, int* teamScore, int* oppScore);  //Prototype for parseLine()
 int processGames(const char* filename);   // Prototype for processGames()
-
 
 
 int main(void)
@@ -60,6 +61,15 @@ int main(void)
 }
 
 
+/*
+* Function name: processGames()
+* Return Values: Returns 0 if successfully proccessed gameFiles. Returns 1 if there was an error Opening or Closing the gameFile.
+* Parameters: const char* filename: Input parameters for the filename which will be processed. 
+* Description: This function processes the gameFile, which extracts the teamName, teamScore, and oppScore from each line by 
+* parsing the given line by calling a function called parseLine(). After extracting the information, it adds it to a counter
+* of wins, losses, ties, and also calculates the win percentage for each gameFile processed. It displays these game results at the end
+* of displaying each game result for the gameFile. also displays error if no game information can be found. 
+*/
 int processGames(const char* filename)
 {
 	double wins = 0;   //Counter for wins
@@ -93,7 +103,7 @@ int processGames(const char* filename)
 
 		int status = parseLine(gameLine, opposingTeam, &teamScore, &oppScore);
 
-		if (status == 0)
+		if (status == 0) //if parseLine() returns 0
 		{
 			printf("\t%s ", primaryTeam);
 
@@ -126,15 +136,25 @@ int processGames(const char* filename)
 	if (fclose(gameFile) != NULL)
 		{
 			printf("Closing file failed.\n");
+			return 1;
 		}
 
     return 0;
 }
 
 
-
-
-
+/*
+* Function name: parseLine()
+* Return Values: Returns 0 if successfully parsed comma and dash, Returns 1 if unsuccessful (missing comma or dash)
+* Parameters: char* wholeLine: Input string which contains information relating to the team's games (gameFile).
+* char* teamName: Output parameter which extracts and stores the teamName of the file currently being processed within processGames().
+* char* teamScore: Output parameter which extarcts and stores the team's Score ...
+* char* oppScore; Output paramter which extracts and stores the opponents Score ...
+* Description: This function parses a an input parameter called wholeLine which contains game information.
+* It extracts teamName, teamScore, and oppScore by using strchr() to find the comma within the game info. 
+* Hence allowing it to leverage the comma's position to extract the location of teamName, teamScore, oppScore.
+* It also handles error checks if dashes or commas are missing in the wholeLine (game information).
+*/
 int parseLine(char* wholeLine, char* teamName, int* teamScore, int* oppScore)
 {
     char* comma = strchr(wholeLine, ',');     //strchr() searches gameLine for ","and assigns it to char pointer "comma"
