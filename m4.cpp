@@ -63,7 +63,7 @@ int main(void)
 
 /*
 * Function name: processGames()
-* Return Values: Returns 0 if successfully proccessed gameFiles. Returns 1 if there was an error Opening or Closing the gameFile.
+* Return Values: Returns "success" if successfully proccessed gameFiles (worked perfectly). Returns "failure" if there was an error Opening or Closing the gameFile (not perfect).
 * Parameters: const char* filename: Input parameters for the filename which will be processed. 
 * Description: This function processes the gameFile, which extracts the teamName, teamScore, and oppScore from each line by 
 * parsing the given line by calling a function called parseLine(). After extracting the information, it adds it to a counter
@@ -72,6 +72,10 @@ int main(void)
 */
 int processGames(const char* filename)
 {
+	int success = 0; //variable to distinguish return status
+	int failure = 1;  //variable to distinguish return status
+
+
 	double wins = 0;   //Counter for wins
 	double losses = 0;  //Counter for losses
 	double ties = 0;   //Counter for ties
@@ -87,7 +91,7 @@ int processGames(const char* filename)
 	if (gameFile == NULL)
 	{
 		printf("Error opening game file\n");
-		return 1;
+		return failure;
 	}
 
 	printf("Processing %s:\n", filename);
@@ -136,16 +140,16 @@ int processGames(const char* filename)
 	if (fclose(gameFile) != NULL)
 		{
 			printf("Closing file failed.\n");
-			return 1;
+			return failure;
 		}
 
-    return 0;
+    return success;
 }
 
 
 /*
 * Function name: parseLine()
-* Return Values: Returns 0 if successfully parsed comma and dash, Returns 1 if unsuccessful (missing comma or dash)
+* Return Values: Returns "success" if successfully parsed comma and dash, Returns "failure" if unsuccessful (missing comma or dash)
 * Parameters: char* wholeLine: Input string which contains information relating to the team's games (gameFile).
 * char* teamName: Output parameter which extracts and stores the teamName of the file currently being processed within processGames().
 * char* teamScore: Output parameter which extarcts and stores the team's Score ...
@@ -157,11 +161,15 @@ int processGames(const char* filename)
 */
 int parseLine(char* wholeLine, char* teamName, int* teamScore, int* oppScore)
 {
+	int success = 0; //variable to distinguish return status
+	int failure = 1;  //variable to distinguish return status
+
+
     char* comma = strchr(wholeLine, ',');     //strchr() searches gameLine for ","and assigns it to char pointer "comma"
     if (comma == NULL)
     {
         printf("Error: Missing comma in line\n");
-        return 1;
+        return failure;
     }
 
 	
@@ -173,14 +181,14 @@ int parseLine(char* wholeLine, char* teamName, int* teamScore, int* oppScore)
 	if (dash == NULL)
 	{
 		printf("Error: Missing dash in line\n");
-		return 1;
+		return failure;
 	}
 
 	
 	*teamScore = atoi(comma + 1);  // Extract teamScore  using comma  position
 	*oppScore = atoi(dash + 1);  // Extract oppScore  using dash  position
 
-	return 0;
+	return success;
 }
 
 
